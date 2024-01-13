@@ -1,4 +1,4 @@
-Nella directory "coppie" sono contenuti i file utilizzati come dataset. i file "copia_..." servono solo come controprova e non sono necessari all'esecuzione del Software, ma il loro numero va preso in considerazione per il parametro "n_docs".
+Nella directory "coppie" sono contenuti i file utilizzati come dataset. i file "copia_..." sono le rielaborazioni effettuate con chatGPT.
 
 Nella directory "DEF" sono contenuti i file ".py" per ogni step della pipeline.
 
