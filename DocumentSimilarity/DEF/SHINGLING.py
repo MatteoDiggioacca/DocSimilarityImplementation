@@ -7,18 +7,6 @@ from bitarray import bitarray
 
 #come ti dicevo, ho considerato che il path base e' "./coppie/test", poi gli aggiungo + "1.pdf","2.pdf","2.pdf", etc...
 
-# Prende in input il path della directory contenente i documenti in PDF ed il nome 
-# del file PDF che servirà da merge di tutti i testi di tutti i documenti, in modo da facilitare
-# la loro analisi tramite shingling
-def merge_pdfs(dir_path,result_file_name):
-    pdfs = os.listdir(dir_path)
-    pdfs.sort()
-    merger = PdfMerger()
-    for pdf in pdfs:
-        merger.append(dir_path + "/" + pdf)
-    merger.write(result_file_name)
-    merger.close()
-    
 
 #pdf to string, prende in input il path di un PDF e restituisce il testo in stringhe
 def extract_text(file_path):
@@ -29,6 +17,7 @@ def extract_text(file_path):
             content = page.extract_text()
             pdf_text += content
     return pdf_text
+
 
 # rimuove tutti i caratteri speciali dal testo, ritornando il testo "ripulito"
 def remove_special_characters(text):
@@ -46,22 +35,27 @@ def remove_special_characters(text):
         text = text.replace(char, "")
     return text
 
-# prende in input il path del file dal quale estrarre gli shingles, un valore "k" per determinare
+# prende in input il path della cartella dal quale estrarre gli shingles, un valore "k" per determinare
 # la lunghezza degli shingles ed un set nel quale inserire gli shingles
-def get_shingles(file_path, k, all_shingles):
+def get_shingles(dir_path, k, all_shingles):
+    pdfs = os.listdir(dir_path)
+    pdfs.sort()
     global counter
-    text = extract_text(file_path)
-    parsed_text = remove_special_characters(text)
-    words = parsed_text.split()
-    for i in range(len(words) - k + 1):
-        shingle = ""
-        for j in range (0,k):
-            if j == 0:
-                shingle += words[i+j]
-            else:
-                shingle += " "+words[i+j]
-        if all(c in string.ascii_lowercase + string.digits + " " for c in shingle):
-            all_shingles.add(shingle)
+    for pdf in pdfs:
+        with open(dir_path + "/" + pdf, 'rb') as pdf:
+            reader = PyPDF2.PdfReader(pdf)
+            for page in reader.pages:
+                parsed_text = page.extract_text()
+                words = parsed_text.split()
+                for i in range(len(words) - k + 1):
+                    shingle = ""
+                    for j in range (0,k):
+                        if j == 0:
+                            shingle += words[i+j]
+                        else:
+                            shingle += " "+words[i+j]
+                    if all(c in string.ascii_lowercase + string.digits + " " for c in shingle):
+                        all_shingles.add(shingle)
 
 
 
