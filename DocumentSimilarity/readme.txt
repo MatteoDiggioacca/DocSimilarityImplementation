@@ -1,3 +1,5 @@
+Riusciamo a riconoscere le rielaborazioni dei testi con chatGPT con metodi computazionali?
+
 Nella directory "coppie" sono contenuti i file utilizzati come dataset. i file "copia_..." sono le rielaborazioni effettuate con chatGPT.
 
 Nella directory "DEF" sono contenuti i file ".py" per ogni step della pipeline.
